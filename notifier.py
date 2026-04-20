@@ -51,10 +51,8 @@ def main():
     if not token:
         print("錯誤: 缺少 LINE_CHANNEL_ACCESS_TOKEN 環境變數。")
         return
-
     base_dir = os.path.dirname(os.path.abspath(__file__))
     schedule_path = os.path.join(base_dir, "schedule.json")
-    groups_path = os.path.join(base_dir, "groups.json")
 
     if not os.path.exists(schedule_path):
         print(f"找不到賽程檔案: {schedule_path}")
@@ -62,23 +60,20 @@ def main():
 
     with open(schedule_path, "r", encoding="utf-8") as f:
         schedule_data = json.load(f)
-    
-    # 載入要發送的群組列表
-    groups = []
-    if os.path.exists(groups_path):
-        with open(groups_path, "r", encoding="utf-8") as f:
-            groups = json.load(f)
-    elif default_group_id:
-        groups = [{"team_name": "柏飛", "group_id": default_group_id}]
+
+    # 直接定義群組清單，確保在 GitHub Actions 環境中 100% 執行
+    groups = [
+        {"team_name": "柏飛", "group_id": default_group_id},
+        {"team_name": "耀田", "group_id": "Ca40d1500f2b01b61aaa2bd712be6afda"},
+        {"team_name": "RL", "group_id": "Cc9a503f2950fd15f7477d82c6c29c92c"}
+    ]
 
     for group in groups:
         team_name = group["team_name"]
-        # 如果 group_id 是佔位符，則使用環境變數
-        to_id = default_group_id if group["group_id"] == "LINE_GROUP_ID" else group["group_id"]
+        to_id = group["group_id"]
         
-        if not to_id:
-            print(f"跳過 {team_name}: 缺少 Group ID")
-            continue
+        if not to_id or to_id == "DEFAULT": # 兼容舊設定
+            to_id = default_group_id
 
         print(f"\n===== 正在處理隊伍: {team_name} =====")
         date_obj, all_matches = get_weekly_schedule(schedule_data, team_name, force_date)
