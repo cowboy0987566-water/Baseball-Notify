@@ -63,7 +63,7 @@ def main():
 
     # 直接定義群組清單，確保在 GitHub Actions 環境中 100% 執行
     groups = [
-        {"team_name": "柏飛", "group_id": default_group_id},
+      #  {"team_name": "柏飛", "group_id": default_group_id},
         {"team_name": "耀田", "group_id": "Cb6dbae27be0e322ba9e99f3ffaf91b2a"},
        {"team_name": "耀田", "group_id": "C6cb516e27bebb35b2fe48689e7a43502"},
         {"team_name": "RL", "group_id": "C36ef59059be22d645b652cd418e05279"}
