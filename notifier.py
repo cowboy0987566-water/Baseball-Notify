@@ -68,36 +68,41 @@ def main():
     # 檢查該隊伍當天是否有任何參與
     has_any_involvement = any(team_name in m["teams"] for m in all_matches)
     
-    if all_matches and has_any_involvement:
-        msg = f"⚾️ 【{team_name}】本週比賽預告 ⚾️\n"
-        msg += f"📅 日期：{date_obj.strftime('%Y/%m/%d')} (日)\n"
-        msg += f"📍 地點：仁德春風球場\n"
-        msg += "----------------------\n"
-        
-        # 將比賽按三場一組(三角賽)分類
-        groups = [
-            all_matches[0:3],
-            all_matches[3:6],
-            all_matches[6:9]
-        ]
-        
-        for group in groups:
-            group_involved = any(team_name in m["teams"] for m in group)
-            if group_involved:
-                for m in group:
-                    is_playing = team_name in m["teams"]
-                    vs_info = f"{m['teams'][0]} vs {m['teams'][1]}"
-                    if is_playing:
-                        msg += f"⏰ {m['time']} | {vs_info}\n"
-                    else:
-                        msg += f"⏰ {m['time']} | {vs_info}(裁判)\n"
-        
-        msg += "----------------------\n"
-        msg += "備註：\n\n"
-        msg += "✅ 參加：\n\n\n"
-        msg += "❌ 不參加：\n"
-    elif all_matches:
-        msg = f"📅 {date_obj.strftime('%m/%d')} (日)\n本週【{team_name}】無賽程，大家休息一週！"
+    if all_matches:
+        if has_any_involvement:
+            msg = f"⚾️ 【{team_name}】本週比賽預告 ⚾️\n"
+            msg += f"📅 日期：{date_obj.strftime('%Y/%m/%d')} (日)\n"
+            msg += f"📍 地點：仁德春風球場\n"
+            msg += "----------------------\n"
+            
+            # 將比賽按三場一組(三角賽)分類
+            groups = [all_matches[i:i+3] for i in range(0, len(all_matches), 3)]
+            
+            for group in groups:
+                group_involved = any(team_name in m["teams"] for m in group)
+                if group_involved:
+                    for m in group:
+                        is_playing = team_name in m["teams"]
+                        vs_info = f"{m['teams'][0]} vs {m['teams'][1]}"
+                        if is_playing:
+                            msg += f"⏰ {m['time']} | {vs_info}\n"
+                        else:
+                            msg += f"⏰ {m['time']} | {vs_info}(裁判)\n"
+            
+            msg += "----------------------\n"
+            msg += "備註：\n\n"
+            msg += "✅ 參加：\n\n\n"
+            msg += "❌ 不參加：\n"
+        else:
+            msg = f"⚾️ 本週所有賽程 ⚾️\n"
+            msg += f"📅 日期：{date_obj.strftime('%Y/%m/%d')} (日)\n"
+            msg += f"📍 地點：仁德春風球場\n"
+            msg += "----------------------\n"
+            for m in all_matches:
+                vs_info = f"{m['teams'][0]} vs {m['teams'][1]}"
+                msg += f"⏰ {m['time']} | {vs_info}\n"
+            msg += "----------------------\n"
+            msg += f"🎉 本週【{team_name}】無賽程，大家休息一週！\n"
     else:
         msg = f"📅 {date_obj.strftime('%m/%d')} (日)\n目前尚無本週賽程資訊。"
 
