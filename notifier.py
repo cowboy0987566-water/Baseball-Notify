@@ -65,7 +65,7 @@ def main():
     groups = [
        # {"team_name": "柏飛", "group_id": default_group_id},
         {"team_name": "耀田", "group_id": "Ca40d1500f2b01b61aaa2bd712be6afda"},
-        {"team_name": "RL", "group_id": "Cc9a503f2950fd15f7477d82c6c29c92c"}
+        {"team_name": "RL", "group_id": "C5f2941eab7c85c53c2fe8b916b580990"}
     ]
 
     for group in groups:
