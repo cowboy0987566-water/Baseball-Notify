@@ -1,7 +1,7 @@
 name: Weekly Softball Schedule Notify
 on:
   schedule:
-    - cron: '0 1 * * 1'
+    - cron: '15 0 * * 1'
   workflow_dispatch:
 jobs:
   notify:
