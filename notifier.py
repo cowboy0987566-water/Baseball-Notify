@@ -61,6 +61,7 @@ def main():
     with open(schedule_path, "r", encoding="utf-8") as f:
         schedule_data = json.load(f)
 
+<<<<<<< HEAD
     # 直接定義群組清單，確保在 GitHub Actions 環境中 100% 執行
     groups = [
       #  {"team_name": "柏飛", "group_id": default_group_id},
@@ -68,12 +69,25 @@ def main():
        {"team_name": "耀田", "group_id": "C6cb516e27bebb35b2fe48689e7a43502"},
         {"team_name": "RL", "group_id": "C36ef59059be22d645b652cd418e05279"}
     ]
+=======
+    groups_path = os.path.join(base_dir, "groups.json")
+    if os.path.exists(groups_path):
+        with open(groups_path, "r", encoding="utf-8") as f:
+            groups = json.load(f)
+    else:
+        # Fallback if groups.json is missing
+        groups = [
+            {"team_name": "柏飛", "group_id": default_group_id},
+            {"team_name": "耀田", "group_id": "C6cb516e27bebb35b2fe48689e7a43502"},
+            {"team_name": "RL", "group_id": "C36ef59059be22d645b652cd418e05279"}
+        ]
+>>>>>>> bac5c15 (Fix: read groups from groups.json and add LINE_GROUP_ID fallback)
 
     for group in groups:
         team_name = group["team_name"]
         to_id = group["group_id"]
         
-        if not to_id or to_id == "DEFAULT": # 兼容舊設定
+        if not to_id or to_id == "DEFAULT" or to_id == "LINE_GROUP_ID": # 兼容舊設定與 groups.json
             to_id = default_group_id
 
         print(f"\n===== 正在處理隊伍: {team_name} =====")
