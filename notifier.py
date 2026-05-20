@@ -77,10 +77,9 @@ def main():
         team_name = group["team_name"]
         to_id = group["group_id"]
         
-        if not to_id or to_id == "DEFAULT" or to_id == "LINE_GROUP_ID": # 兼容舊設定與 groups.json
-            to_id = default_group_id
-
-        print(f"\n===== 正在處理隊伍: {team_name} =====")
+        if team_name == "柏飛":
+            print(f"\n===== 正在處理隊伍: {team_name} (跳過不發送) =====")
+            continue
         date_obj, all_matches = get_weekly_schedule(schedule_data, team_name, force_date)
         
         # 檢查該隊伍當天是否有任何參與
