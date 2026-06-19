@@ -43,6 +43,12 @@ def get_weekly_schedule(schedule_data, team_name, force_date=None):
     return target_sunday, matches
 
 def main():
+    # 賽季結束暫停發送設定
+    SEASON_ENDED = True
+    if SEASON_ENDED:
+        print("目前賽季已結束，暫停發送通知。")
+        return
+
     token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN")
     default_group_id = os.getenv("LINE_GROUP_ID")
     
